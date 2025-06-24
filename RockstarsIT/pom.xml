@@ -116,7 +116,7 @@
               <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
               <generatorName>spring</generatorName>
               <apiPackage>com.wkoonings.rockstarsit.api</apiPackage>
-              <modelPackage>com.wkoonings.rockstarsit.model</modelPackage>
+              <modelPackage>com.wkoonings.rockstarsit.dto</modelPackage>
               <configOptions>
                 <interfaceOnly>true</interfaceOnly>
                 <useSpringBoot3>true</useSpringBoot3>
