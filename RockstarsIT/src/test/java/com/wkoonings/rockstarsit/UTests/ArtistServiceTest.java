@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import com.wkoonings.rockstarsit.model.Artist;
 import com.wkoonings.rockstarsit.persistence.ArtistRepository;
 import com.wkoonings.rockstarsit.service.ArtistService;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +91,7 @@ public class ArtistServiceTest {
                                  .id(1L)
                                  .name("Updated Blue Öyster Cult")
                                  .build();
-    when(artistRepository.findById(1L)).thenReturn(Optional.of(testArtist));
+    when(artistRepository.existsById(1L)).thenReturn(true);
     when(artistRepository.save(any(Artist.class))).thenReturn(updatedArtist);
 
     // When
@@ -99,7 +100,7 @@ public class ArtistServiceTest {
     // Then
     assertThat(result).isNotNull();
     assertThat(result.getName()).isEqualTo("Updated Blue Öyster Cult");
-    verify(artistRepository).findById(1L);
+    verify(artistRepository).existsById(1L);
     verify(artistRepository).save(any(Artist.class));
   }
 
@@ -111,13 +112,13 @@ public class ArtistServiceTest {
                                  .id(999L)
                                  .name("Non-existing Artist")
                                  .build();
-    when(artistRepository.findById(999L)).thenReturn(Optional.empty());
+    when(artistRepository.existsById(999L)).thenReturn(false);
 
     // When & Then
     assertThatThrownBy(() -> artistService.updateArtist(999L, updatedArtist))
-        .isInstanceOf(RuntimeException.class)
+        .isInstanceOf(EntityNotFoundException.class)
         .hasMessageContaining("Artist not found with ID: 999");
-    verify(artistRepository).findById(999L);
+    verify(artistRepository).existsById(999L);
   }
 
   @Test
@@ -166,7 +167,7 @@ public class ArtistServiceTest {
 
     // When & Then
     assertThatThrownBy(() -> artistService.getArtistById(999L))
-        .isInstanceOf(RuntimeException.class)
+        .isInstanceOf(EntityNotFoundException.class)
         .hasMessageContaining("Artist not found with ID: 999");
     verify(artistRepository).findById(999L);
   }
