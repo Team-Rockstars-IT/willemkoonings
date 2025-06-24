@@ -1,0 +1,21 @@
+services:
+  rockstarsit-db:
+    image: postgres:15-alpine
+    container_name: rockstarsit-database
+    ports:
+      - "5432"  # Only container port - Docker assigns random host port
+    environment:
+      POSTGRES_DB: rockstarsit
+      POSTGRES_USER: rockstarsit_user
+      POSTGRES_PASSWORD: rockstarsit_password
+    volumes:
+      - rockstarsit_data:/var/lib/postgresql/data
+      - ./rockstarsit-init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U rockstarsit_user -d rockstarsit" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  rockstarsit_data:
