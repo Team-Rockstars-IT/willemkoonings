@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: RockstarsIT Meta API
+  description: |
+
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+
+tags:
+  - name: artists
+    description: Artists management operations
+  - name: songs
+    description: Songs management operations
+
+paths:
+
+components:
+  schemas:
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: "2024-01-15T10:30:00Z"
+        status:
+          type: integer
+          description: HTTP status code
+          example: 404
+        error:
+          type: string
+          description: Error type
+          example: "Not Found"
+        message:
+          type: string
+          description: Error message
+          example: "Artist not found with ID: 999"
