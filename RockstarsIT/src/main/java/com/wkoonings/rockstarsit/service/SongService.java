@@ -2,6 +2,7 @@ package com.wkoonings.rockstarsit.service;
 
 import com.wkoonings.rockstarsit.model.Song;
 import com.wkoonings.rockstarsit.persistence.SongRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class SongService {
   public Song updateSong(Long id, Song song) {
     log.info("Updating song with ID: {}", id);
     if (!songRepository.existsById(id)) {
-      throw new RuntimeException("Song not found with ID: " + id);
+      throw new EntityNotFoundException("Song not found with ID: " + id);
     }
     song.setId(id);
     return songRepository.save(song);
@@ -46,14 +47,14 @@ public class SongService {
   public Song getSongById(Long id) {
     log.info("Fetching song with ID: {}", id);
     return songRepository.findById(id)
-                         .orElseThrow(() -> new RuntimeException("Song not found with ID: " + id));
+                         .orElseThrow(() -> new EntityNotFoundException("Song not found with ID: " + id));
   }
 
   @Transactional
   public void deleteSong(Long id) {
     log.info("Deleting song with ID: {}", id);
     if (!songRepository.existsById(id)) {
-      throw new RuntimeException("Song not found with ID: " + id);
+      throw new EntityNotFoundException("Song not found with ID: " + id);
     }
     songRepository.deleteById(id);
   }

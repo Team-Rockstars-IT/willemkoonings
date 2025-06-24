@@ -2,6 +2,7 @@ package com.wkoonings.rockstarsit.service;
 
 import com.wkoonings.rockstarsit.model.Artist;
 import com.wkoonings.rockstarsit.persistence.ArtistRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class ArtistService {
   public Artist updateArtist(Long id, Artist artist) {
     log.info("Updating artist with ID: {}", id);
     if (!artistRepository.existsById(id)) {
-      throw new RuntimeException("Artist not found with ID: " + id);
+      throw new EntityNotFoundException("Artist not found with ID: " + id);
     }
     artist.setId(id);
     return artistRepository.save(artist);
@@ -43,10 +44,24 @@ public class ArtistService {
     return artistRepository.findAll();
   }
 
-  @Transactional
   public Artist getArtistById(Long id) {
     log.info("Fetching artist with ID: {}", id);
     return artistRepository.findById(id)
-                           .orElseThrow(() -> new RuntimeException("Artist not found with ID: " + id));
+                           .orElseThrow(() -> new EntityNotFoundException("Artist not found with ID: " + id));
+  }
+
+  public Artist getArtistByName(String name) {
+    log.info("Fetching artist with name: {}", name);
+    return artistRepository.findByName(name)
+                           .orElseThrow(() -> new EntityNotFoundException("Artist not found with name: " + name));
+  }
+
+  @Transactional
+  public void deleteArtist(Long id) {
+    log.info("Deleting artist with ID: {}", id);
+    if (!artistRepository.existsById(id)) {
+      throw new EntityNotFoundException("Artist not found with ID: " + id);
+    }
+    artistRepository.deleteById(id);
   }
 }
