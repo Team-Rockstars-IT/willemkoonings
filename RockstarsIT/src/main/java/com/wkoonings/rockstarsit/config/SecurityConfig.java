@@ -16,25 +16,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authz -> authz
-                                   .anyRequest().permitAll()
-                               //            .requestMatchers("/api/**").permitAll()
-                               //            .requestMatchers("/h2-console/**").permitAll()
-                               //
-                               //            .requestMatchers("/swagger-ui/**").permitAll()
-                               //            .requestMatchers("/swagger-ui.html").permitAll()
-                               //            .requestMatchers("/swagger-ui/index.html").permitAll()
-                               //            .requestMatchers("/v3/api-docs/**").permitAll()
-                               //            .requestMatchers("/v3/api-docs").permitAll()
-                               //            .requestMatchers("/v3/api-docs.yaml").permitAll()
-                               //            .requestMatchers("/v3/api-docs/swagger-config").permitAll()
-                               //            .requestMatchers("/swagger-resources/**").permitAll()
-                               //            .requestMatchers("/swagger-resources").permitAll()
-                               //            .requestMatchers("/webjars/**").permitAll()
-                               //            .requestMatchers("/configuration/ui").permitAll()
-                               //            .requestMatchers("/configuration/security").permitAll()
-                               //            .requestMatchers("/swagger-config.json").permitAll()
-                               //
-                               //            .anyRequest().authenticated()
+            .anyRequest().permitAll()
         )
         .headers(headers -> headers
             .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
