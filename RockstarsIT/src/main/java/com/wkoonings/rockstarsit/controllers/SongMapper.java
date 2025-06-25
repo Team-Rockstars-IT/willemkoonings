@@ -1,47 +1,68 @@
 package com.wkoonings.rockstarsit.controllers;
 
-import com.wkoonings.rockstarsit.dto.DTOSong;
-import com.wkoonings.rockstarsit.dto.DTOSongsResponse;
+import com.wkoonings.rockstarsit.dto.AdditSongRequest;
+import com.wkoonings.rockstarsit.dto.PageInfo;
+import com.wkoonings.rockstarsit.dto.SongPageResponse;
+import com.wkoonings.rockstarsit.dto.SongResponse;
 import com.wkoonings.rockstarsit.model.Song;
 import java.util.List;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 public class SongMapper {
 
-  public static DTOSongsResponse toDTOSongsResponse(List<Song> songs) {
-    DTOSongsResponse response = new DTOSongsResponse();
-    response.content(songs.stream().map(SongMapper::toDTOSong).toList());
+  public static SongPageResponse toResponse(Page<Song> page) {
+    SongPageResponse response = new SongPageResponse();
+
+    // Convert songs to responses
+    List<SongResponse> songResponses = page.getContent()
+                                           .stream()
+                                           .map(SongMapper::toResponse)
+                                           .collect(Collectors.toList());
+
+    response.setContent(songResponses);
+
+    // Create and set page info
+    PageInfo pageInfo = new PageInfo();
+    pageInfo.setSize(page.getSize());
+    pageInfo.setNumber(page.getNumber());
+    pageInfo.setTotalElements(page.getTotalElements());
+    pageInfo.setTotalPages(page.getTotalPages());
+    pageInfo.setFirst(page.isFirst());
+    pageInfo.setLast(page.isLast());
+    pageInfo.setNumberOfElements(page.getNumberOfElements());
+    pageInfo.setEmpty(page.isEmpty());
+
+    response.setPage(pageInfo);
+
     return response;
   }
 
-  public static DTOSong toDTOSong(Song song) {
-    DTOSong dtoSong = new DTOSong();
-    dtoSong.setId(song.getId());
-    dtoSong.setName(song.getName());
-    dtoSong.setYear(song.getYear());
-    dtoSong.setArtistName(song.getArtist().getName());
-    dtoSong.setArtistLink(String.valueOf(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ArtistController.class)
-                                                                                   .getArtistById(song.getArtist().getId())).withRel("artist")));
-    dtoSong.setShortname(song.getShortname());
-    dtoSong.setBpm(song.getBpm());
-    dtoSong.setDuration(song.getDuration());
-    dtoSong.setGenre(song.getGenre());
-    dtoSong.setSpotifyId(song.getSpotifyId());
-    dtoSong.setAlbum(song.getAlbum());
+  public static SongResponse toResponse(Song song) {
+    SongResponse response = new SongResponse();
+    response.setId(song.getId());
+    response.setName(song.getName());
+    response.setYear(song.getYear());
+    response.setShortname(song.getShortname());
+    response.setArtistId(song.getArtist().getId());
+    response.setBpm(song.getBpm());
+    response.setDuration(song.getDuration());
+    response.setGenre(song.getGenre());
+    response.setSpotifyId(song.getSpotifyId());
+    response.setAlbum(song.getAlbum());
 
-    return dtoSong;
+    return response;
   }
 
-  public static Song fromDTOSong(DTOSong dtoSong) {
+  public static Song fromRequest(AdditSongRequest request) {
     Song song = new Song();
-    song.setId(dtoSong.getId());
-    song.setName(dtoSong.getName());
-    song.setYear(dtoSong.getYear());
-    song.setShortname(dtoSong.getShortname());
-    song.setBpm(dtoSong.getBpm());
-    song.setDuration(dtoSong.getDuration());
-    song.setGenre(dtoSong.getGenre());
-    song.setSpotifyId(dtoSong.getSpotifyId());
+    song.setName(request.getName());
+    song.setYear(request.getYear());
+    song.setShortname(request.getShortname());
+    song.setBpm(request.getBpm());
+    song.setDuration(request.getDuration());
+    song.setGenre(request.getGenre());
+    song.setSpotifyId(request.getSpotifyId());
     return song;
   }
 }

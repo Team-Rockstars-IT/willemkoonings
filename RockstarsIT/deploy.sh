@@ -134,7 +134,9 @@ echo "🚀 Starting RockstarsIT Application..."
 SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:$POSTGRES_PORT/rockstarsit" \
 SPRING_DATASOURCE_USERNAME="rockstarsit_user" \
 SPRING_DATASOURCE_PASSWORD="rockstarsit_password" \
-SPRING_JPA_HIBERNATE_DDL_AUTO="update" \
+SPRING_DATASOURCE_DRIVER_CLASS_NAME="org.postgresql.Driver" \
+SPRING_JPA_DATABASE_PLATFORM="org.hibernate.dialect.PostgreSQLDialect" \
+SPRING_JPA_HIBERNATE_DDL_AUTO="validate" \
 SERVER_PORT="$APP_PORT" \
 java -jar target/RockstarsIT-*.jar &
 APP_PID=$!

@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 190,
+    "Name": "(Don't Fear) The Reaper",
+    "Year": 1975,
+    "Artist": "Blue Öyster Cult",
+    "Shortname": "dontfearthereaper",
+    "Bpm": 141,
+    "Duration": 322822,
+    "Genre": "Classic Rock",
+    "SpotifyId": "5QTxFnGygVM4jFQiBovmRo",
+    "Album": "Agents of Fortune"
+  },
+  {
+    "Id": 1363,
+    "Name": "(Funky) Sex Farm",
+    "Year": 2009,
+    "Artist": "Spinal Tap",
+    "Shortname": "funkysexfarm",
+    "Bpm": 107,
+    "Duration": 260068,
+    "Genre": "Metal",
+    "SpotifyId": "1VfdMD8JguRISrccgLifIZ",
+    "Album": "Back From The Dead"
+  },
+  {
+    "Id": 1858,
+    "Name": "(I Just) Died in Your Arms",
+    "Year": 1986,
+    "Artist": "Cutting Crew",
+    "Shortname": "ijustdiedinyourarms",
+    "Bpm": 126,
+    "Duration": 285745,
+    "Genre": "New Wave",
+    "SpotifyId": "4ByEFOBuLXpCqvO1kw8Wdm",
+    "Album": "Broadcast"
+  }
+]

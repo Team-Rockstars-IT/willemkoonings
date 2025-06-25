@@ -1,4 +1,4 @@
-package com.wkoonings.rockstarsit.ITTests;
+package com.wkoonings.rockstarsit.integration;
 
 import com.wkoonings.rockstarsit.model.Artist;
 import com.wkoonings.rockstarsit.service.ArtistService;
@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-public class ArtistServiceIntegrationTest {
+public class ArtistServiceIntegrationIT {
 
   @Container
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")

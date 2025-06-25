@@ -35,11 +35,14 @@ public class Artist {
 
   @Column(nullable = false)
   @NotBlank(message = "Name is required")
-  @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
+  @Size(min = 2, message = "Name must be longer than 2 characters")
   private String name;
 
   @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<Song> songs = new ArrayList<>();
+
+  @Column
+  private Long externalId;
 
   public Artist(final String name, final List<Song> songs) {
     this.name = name;

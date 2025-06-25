@@ -1,4 +1,4 @@
-package com.wkoonings.rockstarsit.UTests;
+package com.wkoonings.rockstarsit.unit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.any;
@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ArtistService Unit Tests")
-public class SongServiceTest {
+public class SongServiceUT {
 
   @Mock
   private SongRepository songRepository;
