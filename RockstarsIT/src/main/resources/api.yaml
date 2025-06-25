@@ -30,32 +30,36 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DTOArtist'
+              $ref: '#/components/schemas/AdditArtistRequest'
       responses:
         '201':
           description: Artist created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOArtist'
+                $ref: '#/components/schemas/ArtistResponse'
         '400':
           description: Invalid artist data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
     get:
       tags:
         - artists
       summary: Get all artists
       operationId: getAllArtists
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/SortParam'
       responses:
         '200':
           description: A list of artists
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOArtistsResponse'
+                $ref: '#/components/schemas/ArtistPageResponse'
   /artists/{id}:
     get:
       tags:
@@ -63,68 +67,53 @@ paths:
       summary: Get an artist by ID
       operationId: getArtistById
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdPathParam'
       responses:
         '200':
           description: An artist object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOArtist'
+                $ref: '#/components/schemas/ArtistResponse'
         '404':
           description: Artist not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
     put:
       tags:
         - artists
       summary: Update an artist by ID
       operationId: updateArtist
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdPathParam'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DTOArtist'
+              $ref: '#/components/schemas/AdditArtistRequest'
       responses:
         '200':
           description: Artist updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOArtist'
+                $ref: '#/components/schemas/ArtistResponse'
         '404':
           description: Artist not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       tags:
         - artists
       summary: Delete an artist by ID
       operationId: deleteArtist
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdPathParam'
       responses:
         '204':
           description: Artist deleted successfully
@@ -133,7 +122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
   /songs:
     post:
       tags:
@@ -145,32 +134,36 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DTOSong'
+              $ref: '#/components/schemas/AdditSongRequest'
       responses:
         '201':
           description: Song created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOSong'
+                $ref: '#/components/schemas/SongResponse'
         '400':
           description: Invalid song data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
     get:
       tags:
         - songs
-      summary: Get all songs
+      summary: Get all songs with pagination
       operationId: getAllSongs
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/SizeParam'
+        - $ref: '#/components/parameters/SortParam'
       responses:
         '200':
           description: A list of songs
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOSongsResponse'
+                $ref: '#/components/schemas/SongPageResponse'
   /songs/{id}:
     get:
       tags:
@@ -178,68 +171,53 @@ paths:
       summary: Get a song by ID
       operationId: getSongById
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdPathParam'
       responses:
         '200':
           description: A song object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOSong'
+                $ref: '#/components/schemas/SongResponse'
         '404':
           description: Song not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
     put:
       tags:
         - songs
       summary: Update a song by ID
       operationId: updateSong
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdPathParam'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DTOSong'
+              $ref: '#/components/schemas/AdditSongRequest'
       responses:
         '200':
           description: Song updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOSong'
+                $ref: '#/components/schemas/SongResponse'
         '404':
           description: Song not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       tags:
         - songs
       summary: Delete a song by ID
       operationId: deleteSong
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/IdPathParam'
       responses:
         '204':
           description: Song deleted successfully
@@ -248,34 +226,79 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DTOErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
 components:
+  parameters:
+    # Pagination Parameters
+    PageParam:
+      name: page
+      in: query
+      description: Page number (0-based)
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+        minimum: 0
+      example: 0
+    
+    SizeParam:
+      name: size
+      in: query
+      description: Number of items per page
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 20
+        minimum: 1
+        maximum: 100
+      example: 20
+    
+    SortParam:
+      name: sort
+      in: query
+      description: Sort criteria in the format 'property,direction' (e.g., 'name,asc' or 'id,desc')
+      required: false
+      schema:
+        type: string
+        default: "id,asc"
+      example: "name,asc"
+    
+    # Path Parameters
+    IdPathParam:
+      name: id
+      in: path
+      description: Unique identifier
+      required: true
+      schema:
+        type: integer
+        format: int64
+      example: 123
+  
   schemas:
-    DTOArtist:
+    AdditArtistRequest:
       type: object
+      required:
+        - name
       properties:
-        id:
-          type: integer
-          format: int64
-          description: Unique identifier for the artist
-          example: 70
         name:
           type: string
           description: Name of the artist
           example: "Blue Öyster Cult"
-        songs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DTOSong'
-          description: List of songs by the artist
-    DTOSong:
+    AdditSongRequest:
       type: object
+      required:
+        - name
+        - year
+        - artistId
+        - shortname
+        - bpm
+        - duration
+        - genre
+        - spotifyId
+        - album
       properties:
-        id:
-          type: integer
-          format: int64
-          description: Unique identifier for the song
-          example: 190
         name:
           type: string
           description: Title of the song
@@ -285,14 +308,11 @@ components:
           format: int32
           description: Year the song was released
           example: 1975
-        artistName:
-          type: string
-          description: Name of the artist who performed the song
-          example: "Blue Öyster Cult"
-        artistLink:
-          type: string
-          description: Link to the artist endpoint
-          readOnly: true
+        artistId:
+          type: integer
+          format: int64
+          description: Unique identifier for the artist
+          example: 70
         shortname:
           type: string
           description: Short name or alias of the song
@@ -319,21 +339,150 @@ components:
           type: string
           description: Name of the album the song belongs to
           example: "Agents of Fortune"
-    DTOArtistsResponse:
+    ArtistResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the artist
+          example: 70
+        name:
+          type: string
+          description: Name of the artist
+          example: "Blue Öyster Cult"
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SongResponse'
+          description: List of songs by the artist
+    SongResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the song
+          example: 190
+        name:
+          type: string
+          description: Title of the song
+          example: "(Don't Fear) The Reaper"
+        year:
+          type: integer
+          format: int32
+          description: Year the song was released
+          example: 1975
+        shortname:
+          type: string
+          description: Short name or alias of the song
+          example: "dontfearthereaper"
+        bpm:
+          type: integer
+          format: int32
+          description: Beats per minute of the song
+          example: 141
+        duration:
+          type: integer
+          format: int32
+          description: Duration of the song in milliseconds
+          example: 322822
+        genre:
+          type: string
+          description: Genre of the song
+          example: "Classic Rock"
+        spotifyId:
+          type: string
+          description: Spotify ID of the song
+          example: "5QTxFnGygVM4jFQiBovmRo"
+        album:
+          type: string
+          description: Name of the album the song belongs to
+          example: "Agents of Fortune"
+        artistId:
+          type: integer
+          format: int64
+          description: Unique identifier for the artist
+          example: 7
+    
+    ArtistPageResponse:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/DTOArtist'
-    DTOSongsResponse:
+            $ref: '#/components/schemas/ArtistResponse'
+          description: List of artists in the current page
+        page:
+          $ref: '#/components/schemas/PageInfo'
+
+    SongPageResponse:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/DTOSong'
-    DTOErrorResponse:
+            $ref: '#/components/schemas/SongResponse'
+          description: List of songs in the current page
+        page:
+          $ref: '#/components/schemas/PageInfo'
+
+    PageInfo:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+          description: Number of items per page
+          example: 20
+        number:
+          type: integer
+          format: int32
+          description: Current page number (0-based)
+          example: 0
+        totalElements:
+          type: integer
+          format: int64
+          description: Total number of elements across all pages
+          example: 150
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages
+          example: 8
+        first:
+          type: boolean
+          description: Whether this is the first page
+          example: true
+        last:
+          type: boolean
+          description: Whether this is the last page
+          example: false
+        numberOfElements:
+          type: integer
+          format: int32
+          description: Number of elements in the current page
+          example: 20
+        empty:
+          type: boolean
+          description: Whether the current page is empty
+          example: false
+    
+    ArtistCollectionResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArtistResponse'
+    SongCollectionResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/SongResponse'
+    ErrorResponse:
       type: object
       properties:
         timestamp:

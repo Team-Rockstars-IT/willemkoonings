@@ -1,5 +1,6 @@
 package com.wkoonings.rockstarsit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,21 +34,22 @@ public class Song {
 
   @Column(nullable = false)
   @NotBlank(message = "Name is required")
-  @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
+  @Size(min = 2, message = "Name must be longer than 2 characters")
   private String name;
 
-  @Column(nullable = false)
+  @Column(name = "`year`", nullable = false)
   private int year;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "artist_id", nullable = false)
+  @JsonIgnore
   private Artist artist;
 
   @Column(nullable = false)
-  @Size(min = 2, max = 100, message = "Shortname must be between 2 and 100 characters")
+  @Size(min = 2, message = "Shortname must be longer than 2 characters")
   private String shortname;
 
-  @Column(nullable = false)
+  @Column
   @Size(min = 1, max = 4)
   private int bpm;
 
@@ -58,11 +60,14 @@ public class Song {
   @Column(nullable = false)
   private String genre;
 
-  @Column(name = "spotify_id", unique = true, nullable = false)
+  @Column(name = "spotify_id")
   private String spotifyId;
 
-  @Column(nullable = false)
+  @Column
   private String album;
+
+  @Column
+  private Long externalId;
 
   public Song(final String name, final int year, final Artist artist, final String shortname,
               final int bpm, final int duration, final String genre, final String spotifyId,

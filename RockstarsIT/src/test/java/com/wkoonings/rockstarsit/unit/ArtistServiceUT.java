@@ -1,4 +1,4 @@
-package com.wkoonings.rockstarsit.UTests;
+package com.wkoonings.rockstarsit.unit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -21,10 +21,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ArtistService Unit Tests")
-public class ArtistServiceTest {
+public class ArtistServiceUT {
 
   @Mock
   private ArtistRepository artistRepository;
@@ -134,7 +135,7 @@ public class ArtistServiceTest {
     when(artistRepository.findAll()).thenReturn(artists);
 
     // When
-    List<Artist> foundArtists = artistService.getAllArtists();
+    List<Artist> foundArtists = artistService.getAllArtists(PageRequest.of(0, 10, null)).getContent();
 
     // Then
     assertThat(foundArtists.size()).isEqualTo(2L);
