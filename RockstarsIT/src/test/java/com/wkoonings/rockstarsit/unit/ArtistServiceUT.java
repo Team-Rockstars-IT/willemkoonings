@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import com.wkoonings.rockstarsit.model.Artist;
 import com.wkoonings.rockstarsit.persistence.ArtistRepository;
 import com.wkoonings.rockstarsit.service.ArtistService;
+import com.wkoonings.rockstarsit.service.JdbcBatchService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ArtistService Unit Tests")
@@ -29,6 +33,8 @@ public class ArtistServiceUT {
 
   @Mock
   private ArtistRepository artistRepository;
+  @Mock
+  private JdbcBatchService jdbcBatchService;
 
   @InjectMocks
   private ArtistService artistService;
@@ -72,7 +78,7 @@ public class ArtistServiceUT {
                            .build();
     List<Artist> artistsToCreate = Arrays.asList(testArtist, artist2);
 
-    when(artistRepository.saveAll(any(List.class))).thenReturn(artistsToCreate);
+    when(jdbcBatchService.batchInsertArtists(any(List.class))).thenReturn(artistsToCreate);
 
     // When
     List<Artist> createdArtists = artistService.createArtists(artistsToCreate);
@@ -81,7 +87,7 @@ public class ArtistServiceUT {
     assertThat(createdArtists.size()).isEqualTo(2);
     assertThat(createdArtists.get(0).getName()).isEqualTo("Blue Öyster Cult");
     assertThat(createdArtists.get(1).getName()).isEqualTo("Led Zeppelin");
-    verify(artistRepository).saveAll(artistsToCreate);
+    verify(jdbcBatchService).batchInsertArtists(artistsToCreate);
   }
 
   @Test
@@ -132,16 +138,16 @@ public class ArtistServiceUT {
                            .build();
 
     List<Artist> artists = Arrays.asList(testArtist, artist2);
-    when(artistRepository.findAll()).thenReturn(artists);
+    when(artistRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<Artist>(artists, PageRequest.of(0, 10), artists.size()));
 
     // When
-    List<Artist> foundArtists = artistService.getAllArtists(PageRequest.of(0, 10, null)).getContent();
+    List<Artist> foundArtists = artistService.getAllArtists(PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "id"))).getContent();
 
     // Then
     assertThat(foundArtists.size()).isEqualTo(2L);
     assertThat(foundArtists.get(0).getName()).isEqualTo("Blue Öyster Cult");
     assertThat(foundArtists.get(1).getName()).isEqualTo("Led Zeppelin");
-    verify(artistRepository).findAll();
+    verify(artistRepository).findAll(any(Pageable.class));
   }
 
   @Test

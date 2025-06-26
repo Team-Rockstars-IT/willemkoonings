@@ -20,7 +20,7 @@ public class JdbcBatchService {
   private final SongRepository songRepository;
   private final JdbcTemplate jdbcTemplate;
 
-  protected List<Artist> batchInsertArtists(List<Artist> artists) {
+  public List<Artist> batchInsertArtists(List<Artist> artists) {
     log.info("Batch inserting {} artists using JDBC", artists.size());
 
     String sql = "INSERT INTO artists (id, name, external_id) VALUES (nextval('artist_id_seq'), ?, ?)";
@@ -39,7 +39,7 @@ public class JdbcBatchService {
     return savedArtists;
   }
 
-  protected List<Song> batchInsertSongs(List<Song> songs) {
+  public List<Song> batchInsertSongs(List<Song> songs) {
     log.info("Batch inserting {} songs using JDBC", songs.size());
 
     String sql = "INSERT INTO songs (id, name, \"year\", artist_id, shortname, bpm, duration, genre, spotify_id, album, external_id) VALUES (nextval('song_id_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

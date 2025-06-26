@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.wkoonings.rockstarsit.model.Song;
 import com.wkoonings.rockstarsit.persistence.SongRepository;
+import com.wkoonings.rockstarsit.service.JdbcBatchService;
 import com.wkoonings.rockstarsit.service.SongService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,8 @@ public class SongServiceUT {
 
   @Mock
   private SongRepository songRepository;
+  @Mock
+  private JdbcBatchService jdbcBatchService;
 
   @InjectMocks
   private SongService songService;
@@ -64,7 +67,7 @@ public class SongServiceUT {
     Song song1 = Song.builder().name("Song 1").build();
     Song song2 = Song.builder().name("Song 2").build();
 
-    when(songRepository.saveAll(any())).thenReturn(List.of(testSong, testSong));
+    when(jdbcBatchService.batchInsertSongs(any(List.class))).thenReturn(List.of(testSong, testSong));
 
     // When
     List<Song> createdSongs = songService.createSongs(List.of(song1, song2));
@@ -73,7 +76,7 @@ public class SongServiceUT {
     assertNotNull(createdSongs);
     assertNotNull(createdSongs.get(0).getId());
     assertNotNull(createdSongs.get(0).getName());
-    verify(songRepository).saveAll(any());
+    verify(jdbcBatchService).batchInsertSongs(any(List.class));
   }
 
   @Test
