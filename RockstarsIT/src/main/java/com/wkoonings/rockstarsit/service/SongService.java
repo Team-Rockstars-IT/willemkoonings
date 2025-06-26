@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SongService {
 
   private final SongRepository songRepository;
+  private final JdbcBatchService jdbcBatchService;
 
   @Transactional
   public Song createSong(Song song) {
@@ -27,8 +28,7 @@ public class SongService {
 
   @Transactional
   public List<Song> createSongs(List<Song> songs) {
-    log.info("Creating new songs: {}", songs.size());
-    return songRepository.saveAll(songs);
+    return this.jdbcBatchService.batchInsertSongs(songs);
   }
 
   @Transactional
