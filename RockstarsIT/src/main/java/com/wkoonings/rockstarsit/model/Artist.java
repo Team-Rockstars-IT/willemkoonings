@@ -26,13 +26,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"songs"})
 public class Artist {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_id_seq")
   @SequenceGenerator(name = "artist_id_seq", sequenceName = "artist_id_seq", allocationSize = 50)
-  @EqualsAndHashCode.Include
   private Long id;
 
   @Column(nullable = false)
