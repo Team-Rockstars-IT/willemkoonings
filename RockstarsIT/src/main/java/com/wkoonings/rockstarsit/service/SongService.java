@@ -60,4 +60,9 @@ public class SongService {
     }
     songRepository.deleteById(id);
   }
+
+  public List<Long> findExternalIdsByExternalIds(List<Long> externalIds) {
+    // Return only the external IDs that exist in the database
+    return songRepository.findExternalIdsByExternalIdIn(externalIds);
+  }
 }

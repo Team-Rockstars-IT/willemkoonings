@@ -1,13 +1,14 @@
 package com.wkoonings.rockstarsit.integration;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.wkoonings.rockstarsit.model.Artist;
 import com.wkoonings.rockstarsit.model.Song;
 import com.wkoonings.rockstarsit.persistence.ArtistRepository;
 import com.wkoonings.rockstarsit.persistence.SongRepository;
-import com.wkoonings.rockstarsit.service.DataInitializationService;
+import com.wkoonings.rockstarsit.setup.DataInitializationService;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -106,6 +107,10 @@ public class DataInitializationServiceIT {
     assertThat(savedArtists).isNotEmpty();
     assertThat(savedSongs).isNotEmpty();
 
+    // Verify only one artist with song genre metal should be present
+    assertThat(savedSongs.size()).isEqualTo(1L);
+    assertThat(savedArtists.size()).isEqualTo(1L);
+
     // Verify that songs have valid artist references
     assertThat(savedSongs).allSatisfy(song -> {
       assertThat(song.getArtist()).isNotNull();
@@ -121,8 +126,7 @@ public class DataInitializationServiceIT {
       assertThat(artistNames).contains(song.getArtist().getName());
     });
 
-    // Verify REST calls were made
-    //    verify(restTemplate).getForObject("http://localhost:8080/artists.json", String.class);
-    //    verify(restTemplate).getForObject("http://localhost:8080/songs.json", String.class);
+    verify(restTemplate).getForObject("http://localhost:8080/artists.json", String.class);
+    verify(restTemplate).getForObject("http://localhost:8080/songs.json", String.class);
   }
 }
