@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArtistService {
 
   private final ArtistRepository artistRepository;
+  private final JdbcBatchService jdbcBatchService;
 
   @Transactional
   public Artist createArtist(Artist artist) {
@@ -27,8 +28,7 @@ public class ArtistService {
 
   @Transactional
   public List<Artist> createArtists(List<Artist> artists) {
-    log.info("Creating new artists: {}", artists.size());
-    return artistRepository.saveAll(artists);
+    return this.jdbcBatchService.batchInsertArtists(artists);
   }
 
   @Transactional

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,7 +30,8 @@ import lombok.NoArgsConstructor;
 public class Artist {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_id_seq")
+  @SequenceGenerator(name = "artist_id_seq", sequenceName = "artist_id_seq", allocationSize = 50)
   @EqualsAndHashCode.Include
   private Long id;
 
