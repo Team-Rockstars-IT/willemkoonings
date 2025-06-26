@@ -2,6 +2,7 @@ package com.wkoonings.rockstarsit.controllers;
 
 import com.wkoonings.rockstarsit.api.ArtistsApi;
 import com.wkoonings.rockstarsit.dto.AdditArtistRequest;
+import com.wkoonings.rockstarsit.dto.ArtistMapper;
 import com.wkoonings.rockstarsit.dto.ArtistPageResponse;
 import com.wkoonings.rockstarsit.dto.ArtistResponse;
 import com.wkoonings.rockstarsit.model.Artist;
