@@ -66,4 +66,12 @@ public class ArtistService {
     }
     artistRepository.deleteById(id);
   }
+
+  public List<Long> findExternalIdsByExternalIds(final List<Long> externalIds) {
+    return artistRepository.findExternalIdsByExternalIdIn(externalIds);
+  }
+
+  public List<Artist> findByExternalIds(final List<Long> externalIds) {
+    return artistRepository.findByExternalIdIn(externalIds);
+  }
 }

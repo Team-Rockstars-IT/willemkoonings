@@ -6,10 +6,9 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wkoonings.rockstarsit.model.Artist;
 import com.wkoonings.rockstarsit.model.Song;
-import com.wkoonings.rockstarsit.service.ArtistService;
-import com.wkoonings.rockstarsit.service.DataInitializationService;
-import com.wkoonings.rockstarsit.service.DataInitializationService.ArtistDto;
-import com.wkoonings.rockstarsit.service.DataInitializationService.SongDto;
+import com.wkoonings.rockstarsit.setup.DataInitializationService;
+import com.wkoonings.rockstarsit.setup.DataInitializationService.ArtistDto;
+import com.wkoonings.rockstarsit.setup.DataInitializationService.SongDto;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -28,9 +27,6 @@ public class DataInitialiationServiceUT {
   @Mock
   private ObjectMapper objectMapper;
 
-  @Mock
-  private ArtistService artistService;
-
   @InjectMocks
   private DataInitializationService dataInitializationService;
 
@@ -44,7 +40,7 @@ public class DataInitialiationServiceUT {
                             "Name": "Test Artist"
                         }
                         """;
-    ArtistDto expectedArtistDto = new ArtistDto(1L, "Test Artist");
+    ArtistDto expectedArtistDto = new ArtistDto(1L, "Test Artist", false);
 
     when(objectMapper.readValue(artistJson, ArtistDto.class)).thenReturn(expectedArtistDto);
 
@@ -75,8 +71,8 @@ public class DataInitialiationServiceUT {
                          ]
                          """;
     ArtistDto[] expectedArtistDtos = new ArtistDto[]{
-        new ArtistDto(1L, "Test Artist 1"),
-        new ArtistDto(2L, "Test Artist 2")
+        new ArtistDto(1L, "Test Artist 1", false),
+        new ArtistDto(2L, "Test Artist 2", false)
     };
 
     when(objectMapper.readValue(artistsJson, ArtistDto[].class)).thenReturn(expectedArtistDtos);
@@ -118,7 +114,6 @@ public class DataInitialiationServiceUT {
         1L, "Test Song", 2023, "Test Artist", "testsong", 120, 180000, "Rock", "spotify123", "Test Album");
 
     when(objectMapper.readValue(songJson, SongDto.class)).thenReturn(expectedSongDto);
-    when(artistService.getArtistByName("Test Artist")).thenReturn(new Artist("Test Artist", List.of()));
 
     // When
     SongDto unmarshalledDto = objectMapper.readValue(songJson, SongDto.class);
@@ -175,7 +170,6 @@ public class DataInitialiationServiceUT {
     };
 
     when(objectMapper.readValue(songsJson, SongDto[].class)).thenReturn(expectedSongDtos);
-    when(artistService.getArtistByName("Test Artist")).thenReturn(new Artist("Test Artist", List.of()));
 
     // When
     SongDto[] unmarshalledDtos = objectMapper.readValue(songsJson, SongDto[].class);
