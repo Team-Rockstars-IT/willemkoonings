@@ -2,6 +2,7 @@ package com.wkoonings.rockstarsit.controllers;
 
 import com.wkoonings.rockstarsit.api.SongsApi;
 import com.wkoonings.rockstarsit.dto.AdditSongRequest;
+import com.wkoonings.rockstarsit.dto.SongMapper;
 import com.wkoonings.rockstarsit.dto.SongPageResponse;
 import com.wkoonings.rockstarsit.dto.SongResponse;
 import com.wkoonings.rockstarsit.model.Artist;

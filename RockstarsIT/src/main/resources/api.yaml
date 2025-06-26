@@ -17,8 +17,56 @@ tags:
     description: Artists management operations
   - name: songs
     description: Songs management operations
+  - name: user
+    description: User authentication and management operations
+
+# Add global security requirement (applies to all endpoints)
+security:
+  - bearerAuth: [ ]
 
 paths:
+  /auth/login:
+    post:
+      tags:
+        - user
+      summary: User login
+      operationId: userLogin
+      # Override global security for login endpoint (no auth required)
+      security: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/logout:
+    post:
+      tags:
+        - user
+      summary: User logout
+      operationId: userLogout
+      responses:
+        '204':
+          description: Successful logout, no content returned
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /artists:
     post:
       tags:
@@ -44,6 +92,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     get:
       tags:
         - artists
@@ -60,6 +114,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArtistPageResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /artists/{id}:
     get:
       tags:
@@ -75,6 +135,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArtistResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Artist not found
           content:
@@ -101,6 +167,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArtistResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Artist not found
           content:
@@ -117,6 +189,12 @@ paths:
       responses:
         '204':
           description: Artist deleted successfully
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Artist not found
           content:
@@ -148,6 +226,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     get:
       tags:
         - songs
@@ -164,6 +248,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SongPageResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /songs/{id}:
     get:
       tags:
@@ -179,6 +269,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SongResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Song not found
           content:
@@ -205,6 +301,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SongResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Song not found
           content:
@@ -221,6 +323,12 @@ paths:
       responses:
         '204':
           description: Song deleted successfully
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Song not found
           content:
@@ -228,6 +336,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+  # Add security schemes definition
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /auth/login endpoint
+
   parameters:
     # Pagination Parameters
     PageParam:
@@ -277,6 +393,36 @@ components:
       example: 123
   
   schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: Username for login
+          example: "user1"
+        password:
+          type: string
+          format: password
+          description: Password for login
+          example: "password"
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - message
+      properties:
+        token:
+          type: string
+          description: JWT token for authenticated requests
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        message:
+          type: string
+          description: Login status message
+          example: "Authentication successful"
+
     AdditArtistRequest:
       type: object
       required:

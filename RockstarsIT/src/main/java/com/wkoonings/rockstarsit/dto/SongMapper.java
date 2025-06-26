@@ -1,9 +1,5 @@
-package com.wkoonings.rockstarsit.controllers;
+package com.wkoonings.rockstarsit.dto;
 
-import com.wkoonings.rockstarsit.dto.AdditSongRequest;
-import com.wkoonings.rockstarsit.dto.PageInfo;
-import com.wkoonings.rockstarsit.dto.SongPageResponse;
-import com.wkoonings.rockstarsit.dto.SongResponse;
 import com.wkoonings.rockstarsit.model.Song;
 import java.util.List;
 import java.util.stream.Collectors;

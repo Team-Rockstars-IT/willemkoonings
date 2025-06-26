@@ -4,6 +4,7 @@ import com.wkoonings.rockstarsit.dto.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,6 +20,19 @@ public class ControllerExceptionHandler {
     errorResponse.setTimestamp(OffsetDateTime.now());
     errorResponse.setStatus(404);
     errorResponse.setError("Not Found");
+    errorResponse.setMessage(exception.getMessage());
+
+    return errorResponse;
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ErrorResponse handleUnauthenticated(BadCredentialsException exception) {
+    log.error("Unauthorized access: {}", exception.getMessage());
+
+    ErrorResponse errorResponse = new ErrorResponse();
+    errorResponse.setTimestamp(OffsetDateTime.now());
+    errorResponse.setStatus(401);
+    errorResponse.setError("Unauthenticated");
     errorResponse.setMessage(exception.getMessage());
 
     return errorResponse;
