@@ -94,3 +94,21 @@ The project includes comprehensive API documentation through OpenAPI 3.0.3 speci
 - **OpenAPI Definition**: Located at `rockstarsit/src/main/resources/api.yaml`
 - **Swagger UI**: Interactive documentation available at http://localhost:8080/swagger-ui/index.html
 - **API Testing**: Use Swagger UI to test endpoints directly in your browser
+
+### Authentication
+
+The application uses a simple token-based authentication system. Two default users are configured:
+
+| Username | Password |
+|----------|----------|
+| user1    | password |
+| user2    | password |
+
+To authenticate:
+
+1. Send a POST request to `/api/auth/login` with username/password
+2. Use the returned token in subsequent requests as a Bearer token: `Authorization: Bearer <token>`
+
+Note: This is a simplified authentication implementation for demonstration purposes. In production, you should use more secure authentication
+mechanisms like JWT with proper password hashing.
+
