@@ -8,16 +8,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "songs")
@@ -25,13 +29,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(exclude = {"artist", "playlists"})
+@ToString(exclude = {"artist", "playlists"})
 public class Song {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "song_id_seq")
   @SequenceGenerator(name = "song_id_seq", sequenceName = "song_id_seq", allocationSize = 50)
-  @EqualsAndHashCode.Include
   private Long id;
 
   @Column(nullable = false)
@@ -70,6 +74,10 @@ public class Song {
 
   @Column
   private Long externalId;
+
+  @ManyToMany(mappedBy = "songs", fetch = FetchType.LAZY)
+  @Builder.Default
+  private Set<Playlist> playlists = new HashSet<>();
 
   public Song(final String name, final int year, final Artist artist, final String shortname,
               final int bpm, final int duration, final String genre, final String spotifyId,

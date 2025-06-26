@@ -138,7 +138,7 @@ public class ArtistServiceUT {
                            .build();
 
     List<Artist> artists = Arrays.asList(testArtist, artist2);
-    when(artistRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<Artist>(artists, PageRequest.of(0, 10), artists.size()));
+    when(artistRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(artists, PageRequest.of(0, 10), artists.size()));
 
     // When
     List<Artist> foundArtists = artistService.getAllArtists(PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "id"))).getContent();
